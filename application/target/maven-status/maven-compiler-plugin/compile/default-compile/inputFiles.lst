@@ -1,0 +1,9 @@
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/service/CouponServiceImpl.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/client/meli/MeliFeignClient.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/controller/CouponController.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/model/RequestCoupon.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/model/Item.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/client/meli/MeliProvider.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/service/CouponService.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/client/meli/MeliProviderImpl.java
+/Users/luisruiz/git/coupon/application/src/main/java/com/coupon/restservice/RestServiceApplication.java

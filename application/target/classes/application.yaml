@@ -1,0 +1,13 @@
+meli:
+  url: "https://api.mercadolibre.com/"
+
+server:
+  port: 8080
+
+feign:
+  client:
+    config:
+      meliClient:
+        connectTimeout: 3000
+        readTimeout: 10000
+        loggerLevel: FULL
