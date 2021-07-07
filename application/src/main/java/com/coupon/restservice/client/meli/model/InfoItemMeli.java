@@ -1,7 +1,8 @@
-package com.coupon.restservice.model;
+package com.coupon.restservice.client.meli.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -11,12 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Item {
-
-    private String id;
+@NoArgsConstructor
+public class InfoItemMeli {
 
     private String title;
 
-    private Double price;
+    private String id;
 
+    private Double price;
 }

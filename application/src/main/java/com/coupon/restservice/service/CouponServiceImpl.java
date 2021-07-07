@@ -1,13 +1,14 @@
 package com.coupon.restservice.service;
 
-import java.util.List;
+import java.util.Comparator;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.coupon.restservice.client.meli.MeliProvider;
 import com.coupon.restservice.model.Item;
 import com.coupon.restservice.model.RequestCoupon;
-import com.sun.tools.javac.jvm.Items;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -29,20 +30,25 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Set<String> getItemsFromCoupon(RequestCoupon requestCoupon) {
 
-        Set<Item> items = getInformationFromMeli(requestCoupon.getItems());
+        SortedSet<String> itemsInCoupon = new TreeSet<>();
+        AtomicReference<Double> priceItemsInCoupon = new AtomicReference<>(0.0);
 
+        getInformationFromMeli(requestCoupon.getItems())
+                .stream()
+                .sorted(Comparator.comparingDouble(Item::getPrice))
+                .forEach(item -> {
+                            priceItemsInCoupon.updateAndGet(v -> v + item.getPrice());
+                            if (priceItemsInCoupon.get() <= requestCoupon.getAmount()) {
+                                itemsInCoupon.add(item.getId());
+                            }
+                        }
+                );
 
-        Set<String> set = new TreeSet<>();
-        set.add("10");
-        set.add("20");
-        set.add("7");
-        set.add("4");
-        log.info("Set that return {}", set);
-        return set;
+        return itemsInCoupon;
     }
 
     private Set<Item> getInformationFromMeli(Set<String> items) {
 
-        return meliProvider.doQuery(items);
+        return meliProvider.getInfoItems(items);
     }
 }

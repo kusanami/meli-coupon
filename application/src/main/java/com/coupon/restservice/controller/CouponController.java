@@ -34,19 +34,16 @@ public class CouponController {
     @PostMapping
     public ResponseEntity<Set<String>> itemsFromCoupon(@RequestBody RequestCoupon requestCoupon) {
 
-        log.info("list items [{}] and amount [{}]", requestCoupon);
+        log.info("list items [{}] and amount [{}]", requestCoupon.getItems(), requestCoupon.getAmount());
 
+        // TODO cuando no tenga nada la lista devolver un 404
         return new ResponseEntity(couponService.getItemsFromCoupon(requestCoupon), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<String> test() {
-        return new ResponseEntity("Test", HttpStatus.OK);
     }
 
     @ExceptionHandler
     private ResponseEntity<String> handleValidationException(Exception exc) {
 
+        // TODO manejo de una excepcion general
         return null;
     }
 }

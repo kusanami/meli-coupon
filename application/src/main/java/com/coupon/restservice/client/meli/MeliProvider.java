@@ -10,5 +10,5 @@ import com.coupon.restservice.model.Item;
  */
 public interface MeliProvider {
 
-    Set<Item> doQuery(Set<String> items);
+    Set<Item> getInfoItems(Set<String> items);
 }
