@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.coupon.restservice.client.meli.MeliProviderImplTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in com.coupon.restservice.client.meli.MeliProviderImplTest

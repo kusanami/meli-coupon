@@ -1,0 +1,4 @@
+com/coupon/restservice/controller/CouponControllerTest.class
+com/coupon/restservice/controller/CouponControllerIntegrationTest.class
+com/coupon/restservice/service/CouponServiceImplTest.class
+com/coupon/restservice/client/meli/MeliProviderImplTest.class
