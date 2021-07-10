@@ -3,7 +3,6 @@ FROM openjdk:8-jdk-alpine
 RUN addgroup -S coupon && adduser -S coupon -G coupon
 USER coupon:coupon
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
+COPY target/rest-service-1.0.jar app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]
