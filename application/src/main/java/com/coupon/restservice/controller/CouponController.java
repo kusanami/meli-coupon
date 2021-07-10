@@ -36,8 +36,11 @@ public class CouponController {
 
         log.info("list items [{}] and amount [{}]", requestCoupon.getItems(), requestCoupon.getAmount());
 
-        // TODO cuando no tenga nada la lista devolver un 404
-        return new ResponseEntity(couponService.getItemsFromCoupon(requestCoupon), HttpStatus.OK);
+        Set<String> idItems = couponService.getItemsFromCoupon(requestCoupon);
+        if(idItems.isEmpty()) {
+            return new ResponseEntity(idItems, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(idItems, HttpStatus.OK);
     }
 
     @ExceptionHandler

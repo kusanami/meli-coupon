@@ -1,4 +1,4 @@
-package com.coupon.restservice.client.meli.util;
+package com.coupon.restservice.client.meli.helper;
 
 import com.coupon.restservice.client.meli.model.InfoItemMeli;
 import com.coupon.restservice.client.meli.model.ItemMeli;
