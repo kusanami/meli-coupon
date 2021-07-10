@@ -1,0 +1,13 @@
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/service/CouponServiceImpl.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/CircuitBreakerConfiguration.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/model/ItemMeli.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/model/Item.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/RestServiceApplication.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/MeliFeignClient.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/MeliProvider.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/model/RequestCoupon.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/controller/CouponController.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/helper/MapperItemMeli.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/service/CouponService.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/model/InfoItemMeli.java
+/Users/luisruiz/git/meli-coupon/application/src/main/java/com/coupon/restservice/client/meli/MeliProviderImpl.java

@@ -1,0 +1,13 @@
+com/coupon/restservice/service/CouponService.class
+com/coupon/restservice/client/meli/MeliProviderImpl.class
+com/coupon/restservice/client/meli/model/ItemMeli.class
+com/coupon/restservice/client/meli/helper/MapperItemMeli.class
+com/coupon/restservice/RestServiceApplication.class
+com/coupon/restservice/client/meli/model/InfoItemMeli.class
+com/coupon/restservice/service/CouponServiceImpl.class
+com/coupon/restservice/model/RequestCoupon.class
+com/coupon/restservice/client/meli/CircuitBreakerConfiguration.class
+com/coupon/restservice/model/Item.class
+com/coupon/restservice/client/meli/MeliProvider.class
+com/coupon/restservice/controller/CouponController.class
+com/coupon/restservice/client/meli/MeliFeignClient.class
