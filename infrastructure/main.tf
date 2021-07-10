@@ -80,14 +80,6 @@ module "autoscaler" {
   depends_on = [module.eks]
 }
 
-module "coupon-service" {
-  source                = "./coupon-service"
-  region                = var.region
-  config_path           = module.eks.config_path
-
-  depends_on = [module.alb-controller]
-}
-
 terraform {
   backend "s3" {
 
