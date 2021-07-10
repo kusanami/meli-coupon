@@ -1,0 +1,18 @@
+meli:
+  url: "https://api.mercadolibre.com/"
+
+server:
+  port: 8080
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      Meli:
+        permittedNumberOfCallsInHalfOpenState: 10
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 25000
+        slidingWindowType: TIME_BASED
+        slidingWindowSize: 60
+        waitDurationInOpenState: 60s

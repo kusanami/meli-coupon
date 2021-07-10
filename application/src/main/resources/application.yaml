@@ -1,0 +1,30 @@
+meli:
+  url: "https://api.smercadolibre.com/"
+
+server:
+  port: 8080
+
+feign:
+  client:
+    config:
+      meliClient:
+        connectTimeout: 3000
+        readTimeout: 10000
+        loggerLevel: FULL
+
+logging:
+  level:
+    com.coupon.restservice.client: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      Meli:
+        permittedNumberOfCallsInHalfOpenState: 10
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 25000
+        slidingWindowType: TIME_BASED
+        slidingWindowSize: 60
+        waitDurationInOpenState: 60s
