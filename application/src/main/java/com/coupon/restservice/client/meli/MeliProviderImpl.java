@@ -30,6 +30,7 @@ public class MeliProviderImpl implements MeliProvider {
 
         return meliFeignClient.getInfoItems(join(",",items), ITEM_ATTRIBUTES)
                 .stream()
+                .filter(itemMeli -> itemMeli.getCode() == 200)
                 .map(itemMeli -> itemMeliMapperToItem(itemMeli))
                 .collect(Collectors.toSet());
     }

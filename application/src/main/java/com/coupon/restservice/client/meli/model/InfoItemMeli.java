@@ -20,4 +20,5 @@ public class InfoItemMeli {
     private String id;
 
     private Double price;
+
 }

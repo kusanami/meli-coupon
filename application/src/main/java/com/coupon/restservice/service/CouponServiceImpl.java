@@ -26,7 +26,6 @@ public class CouponServiceImpl implements CouponService {
         this.meliProvider = meliProvider;
     }
 
-
     @Override
     public Set<String> getItemsFromCoupon(RequestCoupon requestCoupon) {
 
@@ -35,8 +34,10 @@ public class CouponServiceImpl implements CouponService {
 
         getInformationFromMeli(requestCoupon.getItems())
                 .stream()
+                .filter(item -> item.getPrice() != null)
                 .sorted(Comparator.comparingDouble(Item::getPrice))
                 .forEach(item -> {
+
                             priceItemsInCoupon.updateAndGet(v -> v + item.getPrice());
                             if (priceItemsInCoupon.get() <= requestCoupon.getAmount()) {
                                 itemsInCoupon.add(item.getId());
