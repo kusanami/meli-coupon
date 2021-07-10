@@ -8,7 +8,7 @@
 .settings
 bin
 build
-target
+application/target
 dependency-reduced-pom.xml
 *.sublime-*
 /scratch
@@ -19,3 +19,4 @@ README.html
 *terraform
 *.terraform*
 *.tfvars
+*/config
