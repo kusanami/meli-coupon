@@ -1,8 +1,6 @@
 # EKS cluster installation
 
-This repository contains the instructions and resources necessary to install knative in the EKS cluster for AWS.
-
-The system pods will have their respective EC2 instances, however **fargate instances** will be used for applications created within the cluster. As proof of concept we want to validate the proper operation of the applications using **knative + fargate**.
+This repository contains the instructions and resources necessary to create the EKS cluster on AWS.
 
 The code is written in **terraform**, and it's necessary to have an AWS account and their respective credentials.
 
@@ -12,9 +10,9 @@ The contents of the file **secret.tfvars** can be obtained by copying the sample
 
 ## Requeriments
 
-These are the necessary requirements to be able to run the terraform scripts and perform the knative installation:
+These are the necessary requirements to be able to run the terraform scripts and perform the cluster installation:
 
- - Have a terraform version **>~0.14** installed : [Terraform](https://www.terraform.io)
+ - Have a terraform version **>=0.14** installed : [Terraform](https://www.terraform.io)
  - Have credentials and account to AWS services
  - Have kubectl installed [kubectl](https://kubernetes.io/es/docs/tasks/tools/install-kubectl/)
 
@@ -26,23 +24,27 @@ For more information about kubeconfig (k8s configuration file) see: [kubeconfig]
 
 ## Tfstate
 
-Only **tfstate local**, AWS tfstate module not used for this proof of concept.
+This terraform module has **remote state set to S3**, which allows you to retrieve the status of the infrastructure from anywhere that has access to the AWS account.
 
 ## Before to start
 
-- Make sure you have sufficient resources in your AWS account, access to elastic IP, load balancer, elastic network interfaces, budget, etc.
+- Make sure you have sufficient resources in your AWS account, EKS clusters, load balancer, IAM, budget, etc.
 
-- Keep in mind that everything tied to your AWS account, being a proof of concept it is good that you start with a test account with sufficient permissions
+## Deploy the infrastucture
 
-## DEPLOY THE CODE:
-
-These are the necessary steps to complete the creation of the EKS cluster in AWS and the installation of Knative, a **mock of credibanco** is also created automatically to complete the proof of concept.
+These are the necessary steps to complete the creation of the EKS cluster in AWS and the installation of the cluster:
 
 ```bash
-cd pocs/fargate-eks
+cd ${git_home}/meli-coupon/infrastructure/
 ```
 
 - First you must **create the secret.tfvars file** using the example file **secret.tfvars.txt as a template**, then you must replace the variables $ {whatever} with the respective **values of the AWS account** in the created file.
+
+- Execute the indicated
+
+```bash
+terraform init
+```
 
 - Execute the **plan** for the project
 
@@ -56,46 +58,23 @@ echo yes | terraform plan -var-file="secret.tfvars"
 echo yes | terraform apply -var-file="secret.tfvars"
 ```
 
-  Please be patient and wait for the project to finish running. Upon completion, a file called **kubeconfig_knative-eks** (kubeconfig + name of cluster) should be created.
+  Please be patient and wait for the project to finish running. Upon completion, a file called **kubeconfig_test-eks** (kubeconfig + name of cluster) should be created.
 
 - Success! , now create the following environment variable in order to interact with your cluster:
 
  ```bash
- export KUBECONFIG="${GIT_HOME}/knative-cluster/pocs/fargate-eks/kubeconfig_knative-eks" # Replace your git home for the path.
+ export KUBECONFIG="${GIT_HOME_REPO_ADDI_DEVOPS}/infrastucture/kubeconfig_test-eks" # Replace your git home for the path.
  ```
+## Outputs:
 
-- To test the deployed mock with fargate instance, it's necessary to obtain the **AWS load balancer DNS** created for the knative ingress:
+In order to continue the configuration and provisioning of the continuous integration tasks, the following outputs from the terraform code execution must be stored:
+  - **kubeconfig**
+  - **Database Endpoint**
 
-```bash
-kubectl get ingress -n kourier-system knative-external-proxy -o jsonpath='{.status.loadBalancer.ingress[].hostname}'
-```
-
-The output should look something like:
-
-```bash
-75986dcb-kouriersystem-kna-dc22-15034488.us-west-2.elb.amazonaws.com
-```
-
-- The request to verify the operation of the mock (Replace with your AWS ALB):
-
-```bash
-cd $GIT_HOME/knative-cluster
-```
-
-```bash
-curl -v -X POST -H "Content-Type: text/xml" \
-     -H "Host: credibanco.mocks.payu.aws-qa" \
-     --data @docs/samples/mocks/credibanco/authorization.xml http://75986dcb-kouriersystem-kna-dc22-15034488.us-west-2.elb.amazonaws.com/webservicevisa/autorizarcompra.asmx
-```
-
-## DESTROY THE CODE:
+## Destroy infrastucture:
 
 To destroy the cluster and other resources created, just execute:
 
  ```bash
  echo yes | terraform destroy -var-file="secret.tfvars"
  ```
-
- ### I have a problem, who should I contact?
-
- * Me ( Luis Miguel Ruiz - *luis.ruiz@payu.com* )

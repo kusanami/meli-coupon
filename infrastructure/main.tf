@@ -75,7 +75,7 @@ module "autoscaler" {
   map_roles             = var.map_roles
   map_users             = var.map_users
   cluster_id            = module.eks.cluster_id
-  worker_iam_role  = module.eks.worker_iam_role
+  worker_iam_role       = module.eks.worker_iam_role
 
   depends_on = [module.eks]
 }
