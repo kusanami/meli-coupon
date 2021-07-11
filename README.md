@@ -43,6 +43,8 @@ For more details of the building process and unit tests reports see: **[Build](d
 
 To deploy the service it is enough to go to the **actions** tab in our repository and execute the workflow, just one click. The workflow will also be executed when **the repository has a change in its main branch**, that is, when there is a pull request and it is mixed, the application will be updated automatically.
 
+**Important:** The service generates an automatic entry in the DNS so it is necessary to wait a few minutes for it to be enabled on the internet, maybe 5 to 10 minutes.
+
 ![Settings on github](docs/images/deploy.jpeg)
 
 
