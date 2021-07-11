@@ -28,6 +28,11 @@ kubectl patch --kubeconfig ${kubeconfig} configmap/config-autoscaler \
   --type merge \
   --patch '{"data":{"scale-to-zero-pod-retention-period":"500s"}}'
 
+kubectl patch --kubeconfig ${kubeconfig} configmap/config-autoscaler \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"scale-down-delay:"180s"}}'
+
 kubectl apply --kubeconfig ${kubeconfig} --filename https://github.com/knative/net-kourier/releases/download/${knative_version}/kourier.yaml
 sleep 25
 

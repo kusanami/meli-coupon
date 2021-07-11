@@ -1,6 +1,6 @@
 # EKS cluster installation
 
-This repository contains the instructions and resources necessary to create the EKS cluster on AWS.
+This repository contains the instructions and resources necessary to create the EKS cluster on AWS and other infrastructure resources.
 
 The code is written in **terraform**, and it's necessary to have an AWS account and their respective credentials.
 
@@ -58,17 +58,14 @@ echo yes | terraform plan -var-file="secret.tfvars"
 echo yes | terraform apply -var-file="secret.tfvars"
 ```
 
-  Please be patient and wait for the project to finish running. Upon completion, a file called **kubeconfig_test-eks** (kubeconfig + name of cluster) should be created.
+  Please be patient and wait for the project to finish running. Upon completion, a file called **config** (kubeconfig) should be created in the path specified (secret.tfvars).
 
-- Success! , now create the following environment variable in order to interact with your cluster:
+- **Success!** , now all the necessary infrastructure to deploy our application is created!
 
- ```bash
- export KUBECONFIG="${GIT_HOME_REPO_ADDI_DEVOPS}/infrastucture/kubeconfig_test-eks" # Replace your git home for the path.
- ```
 ## Outputs:
 
 In order to continue the configuration and provisioning of the continuous integration tasks, the following outputs from the terraform code execution must be stored:
-  - **kubeconfig**
+  - **config**
   - **Database Endpoint**
 
 ## Destroy infrastucture:
