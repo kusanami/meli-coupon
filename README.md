@@ -1,242 +1,86 @@
-:spring_version: current
-:toc:
-:project_id: gs-rest-service
-:icons: font
-:source-highlighter: prettify
+# Meli Coupon  
 
-This guide walks you through the process of creating a "`Hello, World`" RESTful web
-service with Spring.
+<https://meli.couponlm.net>
 
-== What You Will Build
+## Exercise:
 
-You will build a service that will accept HTTP GET requests at
-`http://localhost:8080/greeting`.
+Mercado Libre is implementing a new benefit for users who use the platform the most with a coupon of a certain amount for free that will allow them to buy as many items marked as favorites that do not exceed the total amount. For this, we are analyzing building an API that given a list of item_id and the total amount can give you the list of items that maximizes the total spent without exceeding it.
 
-It will respond with a JSON representation of a greeting, as the following listing shows:
+In order to complete the deployment of the Meli Coupon application, it is necessary to take into account the following information:
 
-====
-[source,json]
-----
-{"id":1,"content":"Hello, World!"}
-----
-====
+## Architecture
 
-You can customize the greeting with an optional `name` parameter in the query string, as
-the following listing shows:
+![Cloud Architecture](docs/images/architecture.jpeg)
 
-====
-[source,text]
-----
-http://localhost:8080/greeting?name=User
-----
-====
+The selected architecture is an **EKS cluster** on AWS with autoscaling and with high availability using different high availability zones.
 
-The `name` parameter value overrides the default value of `World` and is reflected in the
-response, as the following listing shows:
+Basically, an application loadbalancer receives the requests and through an ingress sends them to the kubernetes cluster, there is the deployment using the built image of our application.
 
-====
-[source,json]
-----
-{"id":1,"content":"Hello, User!"}
-----
-====
-
-== What You Need
-
-:java_version: 1.8
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/prereq_editor_jdk_buildtools.adoc[]
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/how_to_complete_this_guide.adoc[]
-
-[[scratch]]
-== Starting with Spring Initialize
-
-If you use Maven, visit the https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.4.3.RELEASE&packaging=jar&jvmVersion=1.8&groupId=com.example&artifactId=rest-service&name=rest-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.rest-service&dependencies=web[Spring Initializr] to generate a new project with the required dependency (Spring Web).
-
-The following listing shows the `pom.xml` file that is created when you choose Maven:
-
-====
-[source,xml]
-----
-include::initial/pom.xml[]
-----
-====
-
-If you use Gradle, visit the https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.4.3.RELEASE&packaging=jar&jvmVersion=1.8&groupId=com.example&artifactId=rest-service&name=rest-service&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.rest-service&dependencies=web[Spring Initializr] to generate a new project with the required dependency (Spring Web).
-
-The following listing shows the `build.gradle` file that is created when you choose Gradle:
-
-====
-[source,text]
-----
-include::initial/build.gradle[]
-----
-====
-
-=== Manual Initialization (optional)
-
-If you want to initialize the project manually rather than use the links shown earlier, follow the steps given below:
-
-. Navigate to https://start.spring.io.
-This service pulls in all the dependencies you need for an application and does most of the setup for you.
-. Choose either Gradle or Maven and the language you want to use. This guide assumes that you chose Java.
-. Click *Dependencies* and select *Spring Web*.
-. Click *Generate*.
-. Download the resulting ZIP file, which is an archive of a web application that is configured with your choices.
-
-NOTE: If your IDE has the Spring Initializr integration, you can complete this process from your IDE.
-
-[[initial]]
-== Create a Resource Representation Class
-
-Now that you have set up the project and build system, you can create your web service.
-
-Begin the process by thinking about service interactions.
-
-The service will handle `GET` requests for `/greeting`, optionally with a `name` parameter
-in the query string. The `GET` request should return a `200 OK` response with JSON in the
-body that represents a greeting. It should resemble the following output:
-
-====
-[source,json]
-----
-{
-    "id": 1,
-    "content": "Hello, World!"
-}
-----
-====
-
-The `id` field is a unique identifier for the greeting, and `content` is the textual
-representation of the greeting.
-
-To model the greeting representation, create a resource representation class. To do so,
-provide a plain old Java object with fields, constructors, and accessors for the `id` and
-`content` data, as the following listing (from
-`src/main/java/com/example/restservice/Greeting.java`) shows:
-
-[source,java]
-----
-include::complete/src/main/java/com/example/restservice/Greeting.java[]
-----
-
-====
-NOTE: This application uses the https://github.com/FasterXML/jackson[Jackson JSON] library to
-automatically marshal instances of type `Greeting` into JSON. Jackson is included by default by the web starter.
-====
-
-== Create a Resource Controller
-
-In Spring's approach to building RESTful web services, HTTP requests are handled by a
-controller. These components are identified by the
-https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/RestController.html[`@RestController`]
-annotation, and the `GreetingController` shown in the following listing (from
-`src/main/java/com/example/restservice/GreetingController.java`) handles `GET` requests
-for `/greeting` by returning a new instance of the `Greeting` class:
-
-====
-[source,java]
-----
-include::complete/src/main/java/com/example/restservice/GreetingController.java[]
-----
-====
-
-This controller is concise and simple, but there is plenty going on under the hood. We
-break it down step by step.
-
-The `@GetMapping` annotation ensures that HTTP GET requests to `/greeting` are mapped to the `greeting()` method.
-
-NOTE: There are companion annotations for other HTTP verbs (e.g. `@PostMapping` for POST). There is also a `@RequestMapping` annotation that they all derive from, and can serve as a synonym (e.g. `@RequestMapping(method=GET)`).
-
-`@RequestParam` binds the value of the query string parameter `name` into the `name`
-parameter of the `greeting()` method. If the `name` parameter is absent in the request,
-the `defaultValue` of `World` is used.
-
-The implementation of the method body creates and returns a new `Greeting` object with
-`id` and `content` attributes based on the next value from the `counter` and formats the
-given `name` by using the greeting `template`.
-
-A key difference between a traditional MVC controller and the RESTful web service
-controller shown earlier is the way that the HTTP response body is created. Rather than
-relying on a view technology to perform server-side rendering of the greeting data to
-HTML, this RESTful web service controller populates and returns a `Greeting` object. The
-object data will be written directly to the HTTP response as JSON.
-
-This code uses Spring
-https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/RestController.html[`@RestController`]
-annotation, which marks the class as a controller where every method returns a domain
-object instead of a view. It is shorthand for including both `@Controller` and
-`@ResponseBody`.
-
-The `Greeting` object must be converted to JSON. Thanks to Spring's HTTP message converter
-support, you need not do this conversion manually. Because
-https://github.com/FasterXML/jackson[Jackson 2] is on the classpath, Spring's
-https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/http/converter/json/MappingJackson2HttpMessageConverter.html[`MappingJackson2HttpMessageConverter`]
-is automatically chosen to convert the `Greeting` instance to JSON.
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/spring-boot-application-new-path.adoc[]
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/build_an_executable_jar_subhead.adoc[]
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/build_an_executable_jar_with_both.adoc[]
-
-Logging output is displayed. The service should be up and running within a few seconds.
+In addition to the autoscaler cluster to grow the cluster in nodes, knative has been used to scale the application horizontally, **knative allows scaling based on received traffic**, which is a great feature that allows the application to be adapted based on consumption.
 
 
-== Test the Service
+## Infraestructure
 
-Now that the service is up, visit `http://localhost:8080/greeting`, where you should see:
+The creation of the infrastructure to be used in amazon web services is carried out with terraform scripts, the necessary steps for its execution are found in: **[Installation](docs/Infraestructure.md)**
 
-====
-[source,json]
-----
-{"id":1,"content":"Hello, World!"}
-----
-====
+## Build
 
-Provide a `name` query string parameter by visiting
-`http://localhost:8080/greeting?name=User`. Notice how the value of the `content`
-attribute changes from `Hello, World!` to `Hello, User!`, as the following listing shows:
+To build the **Meli Coupon application** locally, just execute the following instructions:
 
-====
-[source,json]
-----
-{"id":2,"content":"Hello, User!"}
-----
-====
+```bash
+cd ${git_home}/meli-coupon/
+mvn clean test package
+docker build -t ${registry}/${service-name} .
+docker push ${registry}/${service-name}
+```
 
-This change demonstrates that the `@RequestParam` arrangement in `GreetingController` is
-working as expected. The `name` parameter has been given a default value of `World` but
-can be explicitly overridden through the query string.
+However, if you want to deploy in the current **AWS Cloud** infrastructure, just make the changes in the repository and create the respective **pull request to the main branch**. Github Actions will take care of updating the application automatically.
 
-Notice also how the `id` attribute has changed from `1` to `2`. This proves that you are
-working against the same `GreetingController` instance across multiple requests and that
-its `counter` field is being incremented on each call as expected.
+For more details of the building process and unit tests reports see: **[Build](docs/Build.md)**
 
-== Summary
 
-Congratulations! You have just developed a RESTful web service with Spring.
+## Time to deploy!
 
-== See Also
+To deploy the service it is enough to go to the **actions** tab in our repository and execute the workflow, just one click. The workflow will also be executed when **the repository has a change in its main branch**, that is, when there is a pull request and it is mixed, the application will be updated automatically.
 
-The following guides may also be helpful:
+**Important:** The service generates an automatic entry in the DNS so it is necessary to wait a few minutes for it to be enabled on the internet, maybe 5 to 10 minutes.
 
-* https://spring.io/guides/gs/accessing-gemfire-data-rest/[Accessing GemFire Data with REST]
-* https://spring.io/guides/gs/accessing-mongodb-data-rest/[Accessing MongoDB Data with REST]
-* https://spring.io/guides/gs/accessing-data-mysql/[Accessing data with MySQL]
-* https://spring.io/guides/gs/accessing-data-rest/[Accessing JPA Data with REST]
-* https://spring.io/guides/gs/accessing-neo4j-data-rest/[Accessing Neo4j Data with REST]
-* https://spring.io/guides/gs/consuming-rest/[Consuming a RESTful Web Service]
-* https://spring.io/guides/gs/consuming-rest-angularjs/[Consuming a RESTful Web Service with AngularJS]
-* https://spring.io/guides/gs/consuming-rest-jquery/[Consuming a RESTful Web Service with jQuery]
-* https://spring.io/guides/gs/consuming-rest-restjs/[Consuming a RESTful Web Service with rest.js]
-* https://spring.io/guides/gs/securing-web/[Securing a Web Application]
-* https://spring.io/guides/tutorials/rest/[Building REST services with Spring]
-* https://spring.io/guides/tutorials/react-and-spring-data-rest/[React.js and Spring Data REST]
-* https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot]
-* https://spring.io/guides/gs/testing-restdocs/[Creating API Documentation with Restdocs]
-* https://spring.io/guides/gs/rest-service-cors/[Enabling Cross Origin Requests for a RESTful Web Service]
-* https://spring.io/guides/gs/rest-hateoas/[Building a Hypermedia-Driven RESTful Web Service]
-* https://spring.io/guides/gs/circuit-breaker/[Circuit Breaker]
+![Settings on github](docs/images/deploy.jpeg)
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/footer.adoc[]
+
+Currently we can consume the service in:
+
+<https://meli.couponlm.net>
+
+![Settings on github](docs/images/service.jpeg)
+
+
+## Testing the application
+
+To do tests on the application, the following request can be made, the service will return the items that the user can purchase according to the list sent and the value of the coupon, for instance:
+
+```
+curl --location --request POST 'https://meli.couponlm.net/coupon' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "items": [
+        "MLA811601010",
+        "MLA816019440",
+        "MLA810645375",
+        "MLA811601014"
+    ],
+    "amount": 19000.00
+}'
+```
+
+The response obtained should be something similar to:
+
+```
+["MLA810645375","MLA811601014"]
+```
+A folder with a collection of postman has been included to consume the service, a jmeter script has also been included where performance tests were done. To know a little more about the tests and the behavior of the application you can consult: **[Testing](docs/Testing.md)**
+
+
+I have a problem, who should I contact?
+
+* Me ( Luis Miguel Ruiz - *luism_fr@hotmail.com* )

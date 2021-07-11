@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "d3323579-61a6-4d67-ae2c-cabc6d8d4e86",
+		"name": "coupon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Meli API Rest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\": [\n        \"MLA811601010\",\n        \"MLA816019440\",\n        \"MLA810645375\",\n        \"MLA811601014\",\n        \"MLA811601015\",\n        \"MLA811601016\",\n        \"MLA811601021\",\n        \"MLA811601056\"\n    ],\n    \"amount\": 29000.00\n}"
+				},
+				"url": {
+					"raw": "https://meli.couponlm.net/coupon",
+					"protocol": "https",
+					"host": [
+						"meli",
+						"couponlm",
+						"net"
+					],
+					"path": [
+						"coupon"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
