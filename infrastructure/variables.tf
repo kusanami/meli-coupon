@@ -20,7 +20,7 @@ variable "instances_desired_size" {
 
 variable "instances_max_size" {
   description = "Maximum number of instances in the eks cluster"
-  default     = 4
+  default     = 6
 }
 
 variable "instances_min_size" {

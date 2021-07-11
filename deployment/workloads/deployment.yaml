@@ -9,6 +9,8 @@ spec:
     metadata:
       annotations:
         autoscaling.knative.dev/minScale: "3"
+        autoscaling.knative.dev/target: "5"
+        autoscaling.knative.dev/metric: "rps"
     spec:
       containers:
         - image: kusanami/first-coupon:latest
